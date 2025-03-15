@@ -2,6 +2,8 @@ import 'package:client/app/routes/route_names.dart';
 import 'package:client/app/theme/app_colors.dart';
 import 'package:client/app/theme/app_typography.dart';
 import 'package:client/common_widgets/button.dart';
+import 'package:client/core/services/network/api_services.dart';
+import 'package:client/features/auth/models/params.model.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -14,7 +16,6 @@ class EnterEmailScreen extends StatefulWidget {
 
 class _EnterEmailScreenState extends State<EnterEmailScreen> {
   final TextEditingController _emailController = TextEditingController();
-  String? _generatedOtp;
 
   @override
   void dispose() {
@@ -22,9 +23,8 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
     super.dispose();
   }
 
-  void sendOtp() {
+  void sendOtp() async {
     final email = _emailController.text.trim();
-    print("Email : ${email}");
 
     if (email.isEmpty || !email.contains('@')) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -32,13 +32,10 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
       return;
     }
 
-    Navigator.pushNamed(
-      context,
-      RouteNames.home,
-      arguments: {
-        'email': email,
-      },
-    );
+    await ApiServices().sendotp(email);
+
+    Navigator.pushNamed(context, RouteNames.verifyEmail,
+        arguments: UserEmail(email: email));
   }
 
   @override
