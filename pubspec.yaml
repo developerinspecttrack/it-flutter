@@ -1,0 +1,37 @@
+name: client
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.1
+
+dependencies:
+  device_preview: ^1.2.0
+  fquery: 1.4.0-beta.1
+  flutter_secure_storage: ^9.2.4
+  flutter_form_builder: ^10.0.1
+  json_serializable: ^6.9.4
+  flutter_dotenv: ^5.2.1
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icons/
+    - .env
+  fonts:
+    - family: Satoshi Variable
+      fonts:
+        - asset: assets/fonts/Satoshi-Regular.otf
+          weight: 400
+        - asset: assets/fonts/Satoshi-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Satoshi-Bold.otf
+          weight: 700
