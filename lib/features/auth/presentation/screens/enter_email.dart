@@ -16,6 +16,7 @@ class EnterEmailScreen extends StatefulWidget {
 
 class _EnterEmailScreenState extends State<EnterEmailScreen> {
   final TextEditingController _emailController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -32,10 +33,24 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
       return;
     }
 
-    await ApiServices().sendotp(email);
+    setState(() {
+      _isLoading = true;
+    });
 
-    Navigator.pushNamed(context, RouteNames.verifyEmail,
-        arguments: UserEmail(email: email));
+    try {
+      await ApiServices().sendotp(email);
+      Navigator.pushNamed(context, RouteNames.verifyEmail,
+          arguments: UserEmail(email: email));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to send OTP: ${e.toString()}')));
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -49,13 +64,13 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 50,
+              height: 24,
             ),
             Text(
               "Enter your Email ID",
               style: TextStyle(
                   fontSize: 24,
-                  color: const Color(0xff6B6B6B),
+                  color: const Color.fromARGB(255, 61, 60, 60),
                   height: 1.24,
                   fontWeight: FontWeight.w700,
                   fontFamily: AppTypography.defaultFontFamily,
@@ -68,21 +83,23 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
               "Enter your government registered Email ID",
               style: TextStyle(
                   fontSize: 14,
-                  color: const Color(0xff736F88),
+                  color: const Color.fromARGB(255, 92, 89, 106),
                   height: 1.24,
                   fontWeight: FontWeight.w500,
                   fontFamily: AppTypography.defaultFontFamily,
                   letterSpacing: AppTypography().applyLetterSpacing(14, 0)),
             ),
             const SizedBox(
-              height: 50,
+              height: 24,
             ),
             SizedBox(
               height: 50,
               child: TextField(
                 controller: _emailController,
                 style: TextStyle(
-                    fontSize: 18, fontFamily: AppTypography.defaultFontFamily),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    fontFamily: AppTypography.defaultFontFamily),
                 keyboardType: TextInputType.emailAddress,
                 cursorColor: AppColors.primaryColor,
                 decoration: InputDecoration(
@@ -106,9 +123,11 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
             const Spacer(),
             Button(
                 text: "Send OTP",
-                lightGradient: const Color(0xffFFF6C5),
-                darkGradient: const Color(0xffF4CF06),
+                loadingText: "Sending OTP",
+                lightGradient: Color.fromARGB(255, 91, 137, 244),
+                darkGradient: Color.fromARGB(255, 0, 74, 247),
                 onTap: sendOtp,
+                isLoading: _isLoading,
                 backgroundColor: AppColors.primaryColor),
           ],
         ),

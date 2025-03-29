@@ -10,7 +10,7 @@ void main() async {
   try {
     await dotenv.load(fileName: ".env");
   } catch (e) {
-    debugPrint("Failed to load .env file: $e");
+    debugPrint("Failed to load .env file: error $e");
   }
   runApp(QueryClientProvider(
     queryClient: FQueryService.client,
