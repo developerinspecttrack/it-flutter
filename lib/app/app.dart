@@ -1,4 +1,5 @@
 import 'package:client/app/routes/app_router.dart';
+import 'package:client/app/routes/route_names.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
@@ -8,12 +9,11 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      builder: DevicePreview.appBuilder,
-      useInheritedMediaQuery: true,
-      routes: AppRouter.routes,
-      debugShowCheckedModeBanner: false,
-      locale: DevicePreview.locale(context),
-      initialRoute: AppRouter.initialRoute,
-    );
+        builder: DevicePreview.appBuilder,
+        useInheritedMediaQuery: true,
+        routes: AppRouter.routes,
+        debugShowCheckedModeBanner: false,
+        locale: DevicePreview.locale(context),
+        initialRoute: RouteNames.initialScreen);
   }
 }

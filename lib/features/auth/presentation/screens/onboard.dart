@@ -4,9 +4,14 @@ import 'package:client/app/theme/app_typography.dart';
 import 'package:client/common_widgets/button.dart';
 import 'package:flutter/material.dart';
 
-class OnboardScreen extends StatelessWidget {
+class OnboardScreen extends StatefulWidget {
   const OnboardScreen({super.key});
 
+  @override
+  State<OnboardScreen> createState() => _OnboardScreenState();
+}
+
+class _OnboardScreenState extends State<OnboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +57,9 @@ class OnboardScreen extends StatelessWidget {
               ),
               Button(
                   text: "Get Started",
-                  lightGradient: Color(0xffFFF6C5),
-                  darkGradient: Color(0xffF4CF06),
+                  loadingText: "Get Started",
+                  lightGradient: Color.fromARGB(255, 91, 137, 244),
+                  darkGradient: Color.fromARGB(255, 0, 74, 247),
                   onTap: () =>
                       {Navigator.pushNamed(context, RouteNames.enterEmail)},
                   backgroundColor: AppColors.primaryColor)

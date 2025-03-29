@@ -5,6 +5,7 @@ class Button extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
   final Color backgroundColor;
+  final String loadingText;
   final Color textColor;
   final double height;
   final double? width;
@@ -14,6 +15,7 @@ class Button extends StatelessWidget {
   final double borderWidth;
   final Color lightGradient;
   final Color darkGradient;
+  final bool isLoading;
 
   const Button({
     Key? key,
@@ -29,12 +31,14 @@ class Button extends StatelessWidget {
     this.fontSize = 16,
     this.fontWeight = FontWeight.w700,
     this.borderWidth = 2.0,
+    this.isLoading = false,
+    required this.loadingText,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: isLoading ? null : onTap,
       child: Container(
         width: width ?? double.infinity,
         height: height,
@@ -54,15 +58,40 @@ class Button extends StatelessWidget {
               borderRadius: BorderRadius.circular(borderRadius - 2),
             ),
             child: Center(
-              child: Text(
-                text,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: fontSize,
-                  fontFamily: AppTypography.defaultFontFamily,
-                  fontWeight: fontWeight,
-                ),
-              ),
+              child: isLoading
+                  ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      Text(
+                        loadingText,
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: fontSize,
+                          fontFamily: AppTypography.defaultFontFamily,
+                          fontWeight: fontWeight,
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                          strokeCap: StrokeCap.round,
+                          semanticsLabel: 'Loading...',
+                        ),
+                      ),
+                    ])
+                  : Text(
+                      text,
+                      style: TextStyle(
+                        color: textColor,
+                        fontSize: fontSize,
+                        fontFamily: AppTypography.defaultFontFamily,
+                        fontWeight: fontWeight,
+                      ),
+                    ),
             ),
           ),
         ),
