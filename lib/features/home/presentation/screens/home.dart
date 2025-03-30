@@ -1,7 +1,7 @@
 import 'package:client/app/theme/app_typography.dart';
+import 'package:client/common_widgets/bottom_navigationbar.dart';
 import 'package:client/core/services/network/api_services.dart';
-import 'package:client/core/services/user/storage.dart';
-import 'package:client/features/auth/models/arguments.model.dart';
+
 import 'package:client/features/auth/models/userprofile.model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -33,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      bottomNavigationBar: BottomNavBar(currentIndex: 0),
       body: SafeArea(
         child: PopScope(
           canPop: false,
