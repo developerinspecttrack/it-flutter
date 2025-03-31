@@ -58,8 +58,7 @@ class _OnboardScreenState extends State<OnboardScreen> {
               Button(
                   text: "Get Started",
                   loadingText: "Get Started",
-                  lightGradient: Color.fromARGB(255, 91, 137, 244),
-                  darkGradient: Color.fromARGB(255, 0, 74, 247),
+                 
                   onTap: () =>
                       {Navigator.pushNamed(context, RouteNames.enterEmail)},
                   backgroundColor: AppColors.primaryColor)

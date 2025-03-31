@@ -14,9 +14,14 @@ class ScheduleInspectionsScreen extends StatefulWidget {
 class _ScheduleInspectionsScreenState extends State<ScheduleInspectionsScreen> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-       backgroundColor: AppColors.appBackgroundColor,
-      bottomNavigationBar: BottomNavBar(currentIndex: 2),
+    return Scaffold(
+      backgroundColor: AppColors.appBackgroundColor,
+      bottomNavigationBar: Theme(
+        data: ThemeData(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent),
+        child: BottomNavBar(currentIndex: 2),
+      ),
       body: SafeArea(
           child: Center(
         child: Column(

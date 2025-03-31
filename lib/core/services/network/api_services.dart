@@ -5,6 +5,7 @@ import 'package:client/core/services/user/storage.dart';
 import 'package:client/features/auth/models/auth.model.dart';
 import 'package:client/features/auth/models/login.model.dart';
 import 'package:client/features/auth/models/userprofile.model.dart';
+import 'package:client/features/auth/models/userroleresponse.model.dart';
 import 'package:http/http.dart' as http;
 
 class HttpStatusCode {
@@ -71,6 +72,7 @@ class ApiServices {
   Future<LoginResponse> verifyOtp(String otp, double lat, double long) async {
     try {
       String otpId = (await UserService.getOtpId()) ?? '';
+      print('otp id $otpId');
       print(
         "verify otp send to ${ApiEndpoints.loginComplete}",
       );
@@ -88,12 +90,19 @@ class ApiServices {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
 
       if (responseData.containsKey("accessToken") &&
-          responseData.containsKey("refreshToken")) {
+          responseData.containsKey("refreshToken") &&
+          responseData.containsKey("userAddress") &&
+          responseData.containsKey("isProfileUpdated")) {
         String accessToken = responseData["accessToken"];
         String refreshToken = responseData["refreshToken"];
+        String userAddress = responseData["userAddress"];
+        bool isProfileUpdated = responseData["isProfileUpdated"];
 
         await UserService.setUserAccessToken(accessToken);
         await UserService.setUserRefreshToken(refreshToken);
+        await UserService.setUserAddress(userAddress);
+        await UserService.setProfileStatus(isProfileUpdated);
+        print('response data $responseData');
 
         return LoginResponse.fromJson(responseData);
       } else {
@@ -103,7 +112,7 @@ class ApiServices {
     } on SocketException {
       throw ApiException(ApiExceptionType.offline, "You are offline");
     } catch (e) {
-      print('error while verifying otp $e');
+      print('error while verifying otp');
       throw ApiException(ApiExceptionType.unknown, "An error occurred: $e");
     }
   }
@@ -128,6 +137,67 @@ class ApiServices {
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonResponse = json.decode(response.body);
       return UserProfile.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to get User Profile');
+    }
+  }
+
+  Future<UserRoleResponse> setUserRole(String userType) async {
+    final body = jsonEncode({
+      'userType': userType,
+    });
+    final accessToken = await UserService.getUserAccessToken();
+    if (accessToken == null) {
+      print("Cannot make API call: Access token is null");
+      throw Exception("Authentication required");
+    }
+
+    final response = await http.put(Uri.parse(ApiEndpoints.userRole),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+        },
+        body: body);
+
+    print('response: ${response.body}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse = json.decode(response.body);
+      return UserRoleResponse.fromJson(jsonResponse);
+    } else {
+      throw Exception('Failed to get User Profile');
+    }
+  }
+
+  Future<UserRoleResponse> setUserProfile(
+      {required String name,
+      required String contactNumner,
+      required String department,
+      required String state}) async {
+    final body = jsonEncode({
+      'name': name,
+      'contactNumber': contactNumner,
+      'department': department,
+      'state': state,
+    });
+    final accessToken = await UserService.getUserAccessToken();
+    if (accessToken == null) {
+      print("Cannot make API call: Access token is null");
+      throw Exception("Authentication required");
+    }
+
+    final response = await http.post(Uri.parse(ApiEndpoints.userProfile),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+        },
+        body: body);
+
+    print('response: ${response.body}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final jsonResponse = json.decode(response.body);
+      return UserRoleResponse.fromJson(jsonResponse);
     } else {
       throw Exception('Failed to get User Profile');
     }

@@ -15,7 +15,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.appBackgroundColor,
-      bottomNavigationBar: BottomNavBar(currentIndex: 1),
+      bottomNavigationBar: Theme(
+        data: ThemeData(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent),
+        child: BottomNavBar(currentIndex: 1),
+      ),
       body: SafeArea(
           child: Center(
         child: Column(

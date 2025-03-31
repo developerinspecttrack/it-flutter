@@ -1,3 +1,4 @@
+import 'package:client/app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:client/app/theme/app_typography.dart';
 
@@ -7,14 +8,15 @@ class Button extends StatelessWidget {
   final Color backgroundColor;
   final String loadingText;
   final Color textColor;
-  final double height;
+  final double? height;
   final double? width;
   final double borderRadius;
+  final bool? isDisabled;
   final double fontSize;
+  final TextStyle? textStyle;
   final FontWeight fontWeight;
   final double borderWidth;
-  final Color lightGradient;
-  final Color darkGradient;
+
   final bool isLoading;
 
   const Button({
@@ -22,10 +24,10 @@ class Button extends StatelessWidget {
     required this.text,
     required this.onTap,
     required this.backgroundColor,
-    required this.lightGradient,
-    required this.darkGradient,
+    this.textStyle,
+    this.isDisabled,
     this.textColor = Colors.white,
-    this.height = 50,
+    this.height,
     this.width,
     this.borderRadius = 12,
     this.fontSize = 16,
@@ -38,16 +40,11 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: isLoading ? null : onTap,
+      onTap: (isDisabled ?? false) || isLoading ? null : onTap,
       child: Container(
         width: width ?? double.infinity,
-        height: height,
+        height: 60,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [lightGradient, darkGradient],
-          ),
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: Padding(
@@ -85,12 +82,13 @@ class Button extends StatelessWidget {
                     ])
                   : Text(
                       text,
-                      style: TextStyle(
-                        color: textColor,
-                        fontSize: fontSize,
-                        fontFamily: AppTypography.defaultFontFamily,
-                        fontWeight: fontWeight,
-                      ),
+                      style: textStyle ??
+                          TextStyle(
+                            color: textColor,
+                            fontSize: fontSize,
+                            fontFamily: AppTypography.defaultFontFamily,
+                            fontWeight: fontWeight,
+                          ),
                     ),
             ),
           ),

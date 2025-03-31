@@ -13,9 +13,14 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: AppColors.appBackgroundColor,
-      bottomNavigationBar: BottomNavBar(currentIndex: 3),
+      bottomNavigationBar: Theme(
+        data: ThemeData(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent),
+        child: BottomNavBar(currentIndex: 3),
+      ),
       body: SafeArea(
           child: Center(
         child: Column(

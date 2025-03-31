@@ -9,6 +9,26 @@ class UserService {
     return await SecuredStorage.readValue("otpId");
   }
 
+  static Future<void> setProfileStatus(bool isUpdated) async {
+    await SecuredStorage.writeValue("userProfileStatus", isUpdated.toString());
+  }
+
+  static Future<bool> getProfileStatus() async {
+    String storedValue =
+        await SecuredStorage.readValue("userProfileStatus") ?? "false";
+    bool result = bool.parse(storedValue);
+
+    return result;
+  }
+
+  static Future<void> setUserAddress(String address) async {
+    await SecuredStorage.writeValue("userAddress", address);
+  }
+
+  static Future<String?> getUserAddress() async {
+    return await SecuredStorage.readValue("userAddress");
+  }
+
   static Future<void> setUserAccessToken(String userToken) async {
     return await SecuredStorage.writeValue("accessToken", userToken);
   }

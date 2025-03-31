@@ -4,7 +4,8 @@ import 'package:client/features/auth/presentation/screens/enter_email.dart';
 import 'package:client/features/auth/presentation/screens/onboard.dart';
 import 'package:client/features/auth/presentation/screens/splash_screen.dart';
 import 'package:client/features/auth/presentation/screens/verify_otp.dart';
-import 'package:client/features/home/presentation/screens/home.dart';
+import 'package:client/features/inspector/presentation/screens/home.dart';
+import 'package:client/features/inspecttrack_user/presentation/screens/isnpecttrack-user.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -26,5 +27,6 @@ class AppRouter {
         RouteNames.onboard: (context) => OnboardScreen(),
         RouteNames.enterEmail: (context) => EnterEmailScreen(),
         RouteNames.verifyEmail: (context) => OtpVerificatonScreen(),
+        RouteNames.ituserInfo: (context) => InspectTrackUserScreen()
       };
 }

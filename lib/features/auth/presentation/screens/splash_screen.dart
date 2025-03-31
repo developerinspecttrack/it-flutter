@@ -18,10 +18,17 @@ class _SplashScreenState extends State<SplashScreen> {
     print("User logged in: $isLoggedIn");
 
     if (isLoggedIn) {
-      await Future.delayed(const Duration(seconds: 2)).then((_) {
-        print("Navigating to home screen");
-        Navigator.pushReplacementNamed(context, RouteNames.home);
-      });
+      if (await UserService.getProfileStatus()) {
+        await Future.delayed(const Duration(seconds: 2)).then((_) {
+          print("Navigating to home screen");
+          Navigator.pushReplacementNamed(context, RouteNames.home);
+        });
+      } else {
+        await Future.delayed(const Duration(seconds: 2)).then((_) {
+          print("Navigating to home screen");
+          Navigator.pushReplacementNamed(context, RouteNames.ituserInfo);
+        });
+      }
     } else {
       await Future.delayed(const Duration(seconds: 2)).then((_) {
         print("Navigating to onboard screen");

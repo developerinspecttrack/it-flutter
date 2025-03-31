@@ -2,10 +2,10 @@ import 'package:client/app/routes/app_router.dart';
 import 'package:client/app/routes/route_names.dart';
 import 'package:client/app/theme/app_colors.dart';
 import 'package:client/app/theme/app_typography.dart';
-import 'package:client/features/dashboard/screens/dashboard.dart';
-import 'package:client/features/home/presentation/screens/home.dart';
-import 'package:client/features/profile/screens/profile.dart';
-import 'package:client/features/scheduled/screens/schedules.dart';
+import 'package:client/features/inspector/presentation/screens/dashboard.dart';
+import 'package:client/features/inspector/presentation/screens/home.dart';
+import 'package:client/features/inspector/presentation/screens/profile.dart';
+import 'package:client/features/inspector/presentation/screens/schedules.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -74,7 +74,7 @@ class BottomNavBar extends StatelessWidget {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
           ),
           child: Container(
-            padding: EdgeInsets.only(top: 6, bottom: 22),
+            padding: EdgeInsets.only(top: 0, bottom: 22),
             child: MouseRegion(
               cursor: SystemMouseCursors.basic,
               child: BottomNavigationBar(
@@ -114,39 +114,36 @@ class BottomNavBar extends StatelessWidget {
             ),
           ),
         ),
-
-        // Centered purple circle button
-        Positioned(
-          bottom: 25, // Adjust this value to position the button vertically
-          child: GestureDetector(
-            onTap: onCreatePressed ??
-                () {
-                  // Default action if no callback is provided
-                  print('Create button pressed');
-                },
-            child: Container(
-              width: 45,
-              height: 45,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primaryColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primaryColor.withOpacity(0.3),
-                    blurRadius: 8,
-                    spreadRadius: 2,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
-          ),
-        ),
+        // Positioned(
+        //   bottom: 40,
+        //   child: GestureDetector(
+        //     onTap: onCreatePressed ??
+        //         () {
+        //           print('Create button pressed');
+        //         },
+        //     child: Container(
+        //       width: 40,
+        //       height: 40,
+        //       decoration: BoxDecoration(
+        //         shape: BoxShape.circle,
+        //         color: AppColors.primaryColor,
+        //         boxShadow: [
+        //           BoxShadow(
+        //             color: AppColors.primaryColor.withOpacity(0.3),
+        //             blurRadius: 8,
+        //             spreadRadius: 2,
+        //             offset: Offset(0, 2),
+        //           ),
+        //         ],
+        //       ),
+        //       child: Icon(
+        //         Icons.add,
+        //         color: Colors.white,
+        //         size: 15,
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

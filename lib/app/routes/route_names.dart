@@ -6,6 +6,7 @@ class RouteNames {
   static const String verifyEmail = "/otp/verify";
 
   // used in routing
+  static const String ituserInfo = "/itUserInfo";
   static const String initialScreen = '/initialScreen';
   static const String home = "/home";
   static const String profile = "/profile";

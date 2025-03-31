@@ -7,4 +7,6 @@ class ApiEndpoints {
   static final String loginComplete = "$login/verify";
   static final String user = "$baseUrl/api/user";
   static final String profile = "$user/profile";
+  static final String userProfile = "$user/profile/update";
+  static final String userRole = "$user/userRole";
 }

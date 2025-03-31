@@ -124,8 +124,7 @@ class _EnterEmailScreenState extends State<EnterEmailScreen> {
             Button(
                 text: "Send OTP",
                 loadingText: "Sending OTP",
-                lightGradient: Color.fromARGB(255, 91, 137, 244),
-                darkGradient: Color.fromARGB(255, 0, 74, 247),
+
                 onTap: sendOtp,
                 isLoading: _isLoading,
                 backgroundColor: AppColors.primaryColor),

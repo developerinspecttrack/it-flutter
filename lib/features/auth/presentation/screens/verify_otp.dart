@@ -6,7 +6,8 @@ import 'package:client/core/services/network/api_services.dart';
 import 'package:client/core/services/user/storage.dart';
 import 'package:client/features/auth/models/arguments.model.dart';
 import 'package:client/features/auth/models/params.model.dart';
-import 'package:client/features/home/presentation/screens/home.dart';
+import 'package:client/features/inspector/presentation/screens/home.dart';
+import 'package:client/features/inspecttrack_user/presentation/screens/isnpecttrack-user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:geolocator/geolocator.dart';
@@ -29,32 +30,28 @@ class _OtpVerificatonScreenState extends State<OtpVerificatonScreen> {
 
   Future<void> getLocation() async {
     try {
-      // First check if location services are enabled
+      final bool isLoggedIn = await UserService.getProfileStatus();
+      print('Profile status: $isLoggedIn');
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         print('Location services are disabled');
         return;
       }
 
-      // Check location permission
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
-        // Request permission
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          // Permission still denied
           print('Location permissions are denied');
           return;
         }
       }
 
       if (permission == LocationPermission.deniedForever) {
-        // Permissions are permanently denied
         print('Location permissions are permanently denied');
         return;
       }
 
-      // Now that we have permission, get the position
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.low);
 
@@ -90,8 +87,13 @@ class _OtpVerificatonScreenState extends State<OtpVerificatonScreen> {
     final userToken = await UserService.getUserAccessToken();
 
     if (userToken != null && await UserService.isUserLoggedIn()) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+      if (await UserService.getProfileStatus()) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+      } else {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => InspectTrackUserScreen()));
+      }
     }
   }
 
@@ -166,8 +168,6 @@ class _OtpVerificatonScreenState extends State<OtpVerificatonScreen> {
               Button(
                 text: "Verify OTP",
                 loadingText: "Verifying OTP",
-                lightGradient: Color.fromARGB(255, 91, 137, 244),
-                darkGradient: Color.fromARGB(255, 0, 74, 247),
                 onTap: verifyOtp,
                 isLoading: _isLoading,
                 backgroundColor: AppColors.primaryColor,
