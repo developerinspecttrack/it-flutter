@@ -1,4 +1,3 @@
-import 'package:client/app/routes/app_router.dart';
 import 'package:client/app/routes/route_names.dart';
 import 'package:client/app/theme/app_colors.dart';
 import 'package:client/app/theme/app_typography.dart';
@@ -40,6 +39,39 @@ class BottomNavBar extends StatelessWidget {
     ));
   }
 
+  void _showLargeBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Container(
+          height:
+              MediaQuery.of(context).size.height * 0.9, // 90% of screen height
+          padding: const EdgeInsets.all(16),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          child: Column(
+            children: [
+              const Text(
+                'Large Modal Bottom Sheet',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              const Text('This modal covers 90% of the screen height.'),
+              const Spacer(),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Close'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Widget _getPage(String route) {
     switch (route) {
       case RouteNames.home:
@@ -58,8 +90,10 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      clipBehavior: Clip.none, // Allow camera icon to overflow
       alignment: Alignment.bottomCenter,
       children: [
+        // Bottom Navigation Bar
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -74,7 +108,7 @@ class BottomNavBar extends StatelessWidget {
             borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
           ),
           child: Container(
-            padding: EdgeInsets.only(top: 0, bottom: 22),
+            padding: const EdgeInsets.only(bottom: 24, top: 0),
             child: MouseRegion(
               cursor: SystemMouseCursors.basic,
               child: BottomNavigationBar(
@@ -114,36 +148,34 @@ class BottomNavBar extends StatelessWidget {
             ),
           ),
         ),
-        // Positioned(
-        //   bottom: 40,
-        //   child: GestureDetector(
-        //     onTap: onCreatePressed ??
-        //         () {
-        //           print('Create button pressed');
-        //         },
-        //     child: Container(
-        //       width: 40,
-        //       height: 40,
-        //       decoration: BoxDecoration(
-        //         shape: BoxShape.circle,
-        //         color: AppColors.primaryColor,
-        //         boxShadow: [
-        //           BoxShadow(
-        //             color: AppColors.primaryColor.withOpacity(0.3),
-        //             blurRadius: 8,
-        //             spreadRadius: 2,
-        //             offset: Offset(0, 2),
-        //           ),
-        //         ],
-        //       ),
-        //       child: Icon(
-        //         Icons.add,
-        //         color: Colors.white,
-        //         size: 15,
-        //       ),
-        //     ),
-        //   ),
-        // ),
+
+        Positioned(
+          bottom: 55,
+          child: InkWell(
+            onTap: onCreatePressed ?? () async {},
+            child: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.primaryColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primaryColor.withOpacity(0.4),
+                    blurRadius: 10,
+                    spreadRadius: 3,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.camera_alt,
+                color: Colors.white,
+                size: 25,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -151,19 +183,14 @@ class BottomNavBar extends StatelessWidget {
   BottomNavigationBarItem _buildNavItem(
       String iconPath, String label, bool isSelected) {
     return BottomNavigationBarItem(
-      icon: Stack(
-        alignment: Alignment.center,
-        children: [
-          SvgPicture.asset(
-            iconPath,
-            height: 22,
-            width: 22,
-            colorFilter: ColorFilter.mode(
-              isSelected ? Colors.black : Colors.grey[600]!,
-              BlendMode.srcIn,
-            ),
-          ),
-        ],
+      icon: SvgPicture.asset(
+        iconPath,
+        height: 22,
+        width: 22,
+        colorFilter: ColorFilter.mode(
+          isSelected ? Colors.black : Colors.grey[600]!,
+          BlendMode.srcIn,
+        ),
       ),
       label: label
           .replaceAll("/", "")
